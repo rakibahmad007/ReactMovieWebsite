@@ -2,7 +2,9 @@ import React from "react";
 import Search from "./components/Search";
 import { useState, useEffect } from "react";
 import heroImg from "./images/hero.png";
-import { use } from "react";
+import { use } from "react";  
+import Spinner from "./components/Spinner";
+import MovieCard from "./components/MovieCard";
 
 const API_BASE_URL = "https://api.themoviedb.org/3";
 
@@ -70,8 +72,23 @@ const App = () => {
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
 
-        <section>
-          <h2>All Movies</h2>
+        <section className="all-movies">
+          <h2 className="mt-[40px]">All Movies</h2>
+
+          {loading? (
+            <Spinner/>
+          ) : errorMessage ? ( 
+            <p className="text-red-500"> {errorMessage}</p>
+          ):(
+            <ul>
+              {movieList.map((movie)=> (
+                <MovieCard key={movie.id} movie= {movie}/>
+                // we are passing the movie object as a prop to the MovieCard component, so that we can destruct the movie object in the MovieCard component
+              ))}
+            </ul>
+          )}
+
+
 
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </section>
